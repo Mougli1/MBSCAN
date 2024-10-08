@@ -32,7 +32,7 @@ def meMatrix(data, NumTree, HeightLimit, e):
     TreeNodeMass = EstData['TreeNodeMass']
 
     print('iTrees construits.')
-    print('Construction de la matrice de désimilarité...')
+    print('Construction de la matrice MBD...')
 
     n = TreeNode.shape[0]
     Matrix = np.zeros((n, n))
