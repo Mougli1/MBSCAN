@@ -32,19 +32,19 @@ class MeDissimilarity: #la classe permet de pouvoir définir un ensemble de fonc
         """
         if current_height >= lim or data_sub.shape[0] <= 1: # cas de base de récursivité : si la hauteur du noeud est superieur à la limite ou alors si il y a une obs ou moins
             return It_node(None, None, None, None, current_height) #alors on crée un leaf node (pas de l et de r ni de split)
-        q = np.random.randint(data_sub.shape[1])#le split attribut est choisi aléatoirement parmi tt les col du dataset
+        q = np.random.randint(data_sub.shape[1])#le split attribut est choisi aléatoirement parmi tt les col de data_sub
         p = np.random.uniform(data_sub[:, q].min(), data_sub[:, q].max()) #le splitpoint est choisi aléatoirement entre la valeur min et max de l'attribut parmi tt les obs
         xl, xr = data_sub[data_sub[:, q] < p], data_sub[data_sub[:, q] >= p] #l'enfant gauche à les données inférieures et l'enfant droit à les données supérieures
         return It_node(#on renvoie un noeudqui a comme caractéristique (attributs d'instance définis dans __init__)
-            self.get_random_itree(xl, current_height + 1, lim), # le noeud gauche qui lui même appelle la fonction de division de manière récursivejusqua atteindre le noeud de profondeur maximale
-            self.get_random_itree(xr, current_height + 1, lim), # le noeud droit qui lui même appelle la fonction de division de manière récursive jusqua atteindre le noeud de profondeur maximale
-            q, p, current_height #q comme split attribut, p comme split point, et la hauteur comme actuel comme hauteur du neoud
+            l=self.get_random_itree(data_sub=xl, current_height=current_height + 1, lim=lim), # le noeud gauche qui lui même appelle la fonction de division de manière récursivejusqua atteindre le noeud de profondeur maximale
+            r=self.get_random_itree(data_sub=xr, current_height=current_height + 1, lim=lim), # le noeud droit qui lui même appelle la fonction de division de manière récursive jusqua atteindre le noeud de profondeur maximale
+            split_attr=q, split_val=p, level=current_height #q comme split attribut, p comme split point, et la hauteur comme actuel comme hauteur du neoud
         )
 
     def get_n_random_itrees(self, n, subs_size): #objectif : créer un stockage de n root nodes
         self.root_nodes = np.array([ # on crée un tableau qui stocke les root nodes (en self car utilisé après)
             #il genere n root nodes en utilisant la méthode adéquate
-            self.get_random_itree(self.data[np.random.choice(self.data.shape[0], subs_size, replace=False)])#on donne un seul paramètre : une partie des observations (de la taille désirée par l'user)
+            self.get_random_itree(data_sub=self.data[np.random.choice(self.data.shape[0], subs_size, replace=False)])#on donne un seul paramètre : une partie des observations (de la taille désirée par l'user)
             for _ in range(n) #compréhension de liste
         ], dtype=object)
         self.subs_size = subs_size  # #on utilise self ici non pas parce que c'est un attribut d'instance (auquel cas il serait dans __init__) mais parce que'il sera réutilisé dans une autre méthode commepour random_itrees
