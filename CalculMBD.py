@@ -2,7 +2,7 @@ import numpy as np
 from functools import partial
 import pdb
 
-
+np.random.seed(42)  # Fixer la graine aléatoire
 class It_node:#la classe permet de pouvoir définir de manière algorithmique un arbre binaire(un noeud et ses 2 enfants)
 
     def __init__(self, l, r, split_attr, split_val, level, mass_comp=0):
